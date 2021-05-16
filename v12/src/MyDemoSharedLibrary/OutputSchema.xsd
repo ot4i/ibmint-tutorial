@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/MyDemoOutput" xmlns:tns="http://www.example.org/MyDemoOutput" elementFormDefault="qualified">
+<element name="OutputMessage">
+<complexType>
+<sequence>
+<element name="Field1" type="string"/>
+<element name="Field2" type="string"/>
+<element name="Field3" type="string"/>
+<element name="OperatingEnvironment">
+<complexType>
+<sequence>
+<element name="OperatingSystem" type="string"/>
+<element name="ApplicationName" type="string"/>
+<element name="MessageFlowName" type="string"/>
+<element name="RuntimeEnvironmentDescription" type="string"/>
+</sequence>
+</complexType>
+</element>
+</sequence>
+</complexType>
+</element>
+</schema>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0" xmlns:map="default">
+    <input path="mbsharedlib://MyDemoSharedLibrary/InputSchema.xsd"/>
+    <output path="mbsharedlib://MyDemoSharedLibrary/OutputSchema.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="input" uri="http://www.example.org/MyDemoInput"/>
+        <namespace kind="supplement" prefix="output" uri="http://www.example.org/MyDemoOutput"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="MyDemoFlow_Mapping">
+        <input namespace="http://www.example.org/MyDemoInput" path="mb:msg(InputMessage,assembly,XMLNSC,Properties)" var="ComIbmMessageAssembly_InputMessage"/>
+        <output namespace="http://www.example.org/MyDemoOutput" path="mb:msg(OutputMessage,assembly,XMLNSC,Properties)" var="ComIbmMessageAssembly_OutputMessage"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_InputMessage/Properties"/>
+            <output path="$ComIbmMessageAssembly_OutputMessage/Properties"/>
+            <override>
+                <assign value="{MyDemoSharedLibrary}">
+                    <output path="$ComIbmMessageAssembly_OutputMessage/Properties/MessageSet"/>
+                </assign>
+            </override>
+        </move>
+        <function ref="fn:upper-case">
+            <input path="$ComIbmMessageAssembly_InputMessage/InputMessage/Field1" var="Field1"/>
+            <output path="$ComIbmMessageAssembly_OutputMessage/OutputMessage/Field1"/>
+            <param name="string" value="$Field1"/>
+        </function>
+        <function ref="fn:upper-case">
+            <input path="$ComIbmMessageAssembly_InputMessage/InputMessage/Field2" var="Field2"/>
+            <output path="$ComIbmMessageAssembly_OutputMessage/OutputMessage/Field2"/>
+            <param name="string" value="$Field2"/>
+        </function>
+        <function ref="fn:upper-case">
+            <input path="$ComIbmMessageAssembly_InputMessage/InputMessage/Field3" var="Field3"/>
+            <output path="$ComIbmMessageAssembly_OutputMessage/OutputMessage/Field3"/>
+            <param name="string" value="$Field3"/>
+        </function>
+        <assign value="AssignedByJavaComputeNode">
+            <output path="$ComIbmMessageAssembly_OutputMessage/OutputMessage/OperatingEnvironment/OperatingSystem"/>
+        </assign>
+        <assign value="AssignedByJavaComputeNode">
+            <output path="$ComIbmMessageAssembly_OutputMessage/OutputMessage/OperatingEnvironment/ApplicationName"/>
+        </assign>
+        <assign value="AssignedByJavaComputeNode">
+            <output path="$ComIbmMessageAssembly_OutputMessage/OutputMessage/OperatingEnvironment/MessageFlowName"/>
+        </assign>
+        <assign value="AssignedByJavaComputeNode">
+            <output path="$ComIbmMessageAssembly_OutputMessage/OutputMessage/OperatingEnvironment/RuntimeEnvironmentDescription"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

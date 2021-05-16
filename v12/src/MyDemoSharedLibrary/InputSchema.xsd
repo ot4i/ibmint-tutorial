@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/MyDemoInput" xmlns:tns="http://www.example.org/MyDemoInput" elementFormDefault="qualified">
+<element name="InputMessage">
+<complexType>
+<sequence>
+<element name="Field1" type="string"/>
+<element name="Field2" type="string"/>
+<element name="Field3" type="string"/>
+</sequence>
+</complexType>
+</element>
+</schema>
