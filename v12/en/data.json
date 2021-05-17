@@ -73,11 +73,14 @@
             "heading":"Import project",
             "_createComment":"A description of what will happen when the user clicks Import.",
             "sections":[
-              {
-                "section":"Click <span class='uicontrol'>Import</span> and the <span class='uicontrol'>Example_JSONObject_ESQL</span> application will be imported into your workspace."
+              {				  
+                "section":"Unlike most other tutorials, you are recommended to start this tutorial from an empty workspace. The reason for this advice, is that the tutorial includes running the ibmint package command which will scan your workspace to discover projects that can be built ready for deployment. Starting from a workspace which contains other projects could cause you to encounter other unexpected outputs or errors, so to keep the tutorial as easy as possible to follow it's best to start from a clean workspace."				  
+				  },
+				  {
+                "section":"Click <span class='uicontrol'>Import</span> and the following projects will be imported into your workspace:<br>The application named <span class='uicontrol'>MyDemoApplication</span><br>The java project named <span class='uicontrol'>MyDemoApplicationJava</span>The shared library named <span class='uicontrol'>MyDemoSharedLibrary</span>"
               },
               {
-                "section":"The <span class='uicontrol'>Example_JSONObject_ESQL</span> message flow will be opened for you."
+                "section":"The <span class='uicontrol'>MyDemoFlow</span> message flow will be opened for you."
               }
             ]
           },
@@ -105,20 +108,25 @@
         "prepare":{
           "overview":{
             "name":"Prepare",
-            "heading":"Prepare an Integration Server to test the message flow",
+            "heading":"Explore the provided integration artifacts",
             "_prepareComment":"Creating an IntegrationServer:",
             "sections":[
               {
-                "section":"<b>Create an Integration Server</b>",
+                "section":"",
                 "steps":{
                   "type":"ordered",
                   "details":[
                     {
-                      "details":"Next you will test the message flow using a local integration server, which is created from within the Toolkit. If you're using a Toolkit earlier than version 11.0.0.7, then you will need to open an App Connect Enterprise Command Console and start an integration server that way. This alternate option is detailed in the <a href='https://www.ibm.com/support/knowledgecenter/en/SSTTDS_11.0.0/com.ibm.etools.mft.doc/bn03995_.html'>Knowledge Center</a>, but we will progress in this tutorial assuming you're using our most up to date Toolkit capabilities."
+                      "details":"The main focus of this tutorial is to demonstrate how you can take integration artifacts which have been developed and prepare them for the IBM App COnnect Enterprise runtime. These actions will be described in detail in the <b>Run</b> section of this tutorial, but before moving to that section if you are interested in the provided development artifacts, they are described below."
                     },
                     {
-                      "details":"From the Integration Explorer view in the bottom left corner of the Toolkit, right-click the Integration Servers folder and select the option to <span class='uicontrol'>Create a local integration server</span>. Leave all the options with their default values and click Finish. The local Integration Server will be started, using a project in your Toolkit's workspace as the work directory. Click OK to dismiss the Success dialog."
-                    }
+                      "details":"The message flow named MyDemoFlow expects to receive an XML message over HTTP which looks like this:<br><code>&lt;input:InputMessage xmlns:input=\"http://www.example.org/MyDemoInput\"&gt;<br>&lt;input:Field1&gt;this&lt;/input:Field1&gt;<br>&lt;input:Field2&gt;gets&lt;/input:Field2&gt;<br>&lt;input:Field3&gt;uppercased&lt;/input:Field3&gt;<br>&lt;/input:InputMessage&gt;</code><br> This input is transformed into an output message which looks like this:<br><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;<br>&lt;output:OutputMessage xmlns:output=\"http://www.example.org/MyDemoOutput\"&gt;<br>  &lt;output:Field1&gt;THIS&lt;/output:Field1&gt;<br>  &lt;output:Field2&gt;GETS&lt;/output:Field2&gt;<br>  &lt;output:Field3&gt;UPPERCASED&lt;/output:Field3&gt;<br>  &lt;output:OperatingEnvironment&gt;<br>    &lt;output:OperatingSystem&gt;Windows 8&lt;/output:OperatingSystem&gt;<br>    &lt;output:ApplicationName&gt;MyDemoApplication&lt;/output:ApplicationName&gt;<br>    &lt;output:MessageFlowName&gt;MyDemoFlow&lt;/output:MessageFlowName&gt;<br>    &lt;output:RuntimeEnvironmentDescription&gt;ThisPropertyHasNoOverrideApplied&lt;/output:RuntimeEnvironmentDescription&gt;<br>  &lt;/output:OperatingEnvironment&gt;<br>&lt;/output:OutputMessage&gt;</code><br> As you can see, the message flow takes the string values carried by Field1, Field2 and Field3 and uppercases them. This is done by the graphical mapping node in the message flow. Extra fields are added to a section in the output message which describe the operating environment in which the message flow is running. This is done by the JavaCompute node in the message flow."
+                    },
+ {
+                      "details":"The main focus of this tutorial is to demonstrate how you can take integration artifacts which have been developed and prepare them for the IBM App COnnect Enterprise runtime. These actions will be described in detail in the <b>Run</b> section of this tutorial, but before moving to that section if you are interested in the provided development artifacts, they are described below."
+ }					
+					
+					
                   ]
                 }
               }
@@ -132,18 +140,12 @@
             "_runComment":"The full steps for the user to run through the tutorial. Use 'sections' to render paragraphs, 'steps' with a type of 'ordered' or 'unordered' to render HTML lists, and 'substeps' to render nested lists.",
             "sections":[
               {
-                "section":"<b>Testing using the Flow Exerciser</b>",
+                "section":"",
                 "steps":{
                   "type":"ordered",
                   "details":[
                     {
-                      "details":"The imported message flow <span class='application'>Example_JSONObject_ESQL</span> should still be open. At the top of the flow canvas, click the Flow Exerciser icon <img src='https://ot4i.github.io/iib-tutorials/images/icons/iib/startFlowExerciser.png' alt='' />. If prompted (which you will be if your Toolkit has known connections to more than one server), select the <span class='application'>TEST_SERVER</span> integration server that you just created and agree to the confirmation dialog which warns that the message flow is owned by an Application. After a few seconds another confirmation dialog will appear with a Ready to record message status. Read through the information on the dialog and click Close."
-                    },
-                    {
-                      "details":"Back at the top of the flow, click on the Send Message icon <img src='https://ot4i.github.io/iib-tutorials/images/icons/iib/sendMessage.png' alt='' /> and when the dialog opens, select the provided input message:<br><code>&lt;Message&gt;&lt;Country&gt;&lt;Name&gt;UK&lt;/Name&gt;&lt;Greeting&gt;Hello&lt;/Greeting&gt;&lt;/Country&gt;&lt;/Message&gt;</code><br>Click Send to push the data into the flow."
-                    },
-                    {
-                      "details":"You should receive a reply message from the flow. The XML will have been transformed into a JSON Object message:<br><code>{\"Message\":{\"Country\":{\"Name\":\"UK\",\"Greeting\":\"Hello\"}}}</code>"
+                      "details":"If you happen to have a local integration server whose working directory is defined in your workspace, then you will need to ensure it is stopped before running the commands which follow. Running integation servers lock some of the files in their working directory (such as log and trace files for example), so to avoid errors about the ibmint package command not being able to access files due to them being locked by another process, you should stop the server before executing the <code>ibmint package</code> command. Open an IBM App Connect Enterprise command console and execute the following command, using your Toolkit workspace as the value for the <b>--input-path</b> parameter, and an appropriate file path for the <b>--output-bar-file</b> parameter. For example on a Windows system:<br><code>ibmint package --input-path C:\\MyWorkspace --output-bar-file C:\\temp\\MyDemo.bar</code><br><br>The command will attempt to scan the directory specified by the <b>--input-path parameter</b> looking for resources which can be compiled and packaged. You should receive command output that looks a bit like this:<br><code>C:\\Program Files\\IBM\\ACE\\12.0.1.0>ibmint package --input-path C:\\MyWorkspace --output-bar-file C:\\temp\\MyDemo.bar<br>BIP8409I: Compiling Java project '\\\\?\\C:\\MyWorkspace\\MyDemoApplicationJava'<br>BIP1859I: Successfully added file 'application.descriptor' to the BAR file.<br>BIP1859I: Successfully added file 'MyDemoFlow.msgflow' to the BAR file.<br>BIP1859I: Successfully added file 'MyDemoFlow_inputMessage.xml' to the BAR file.<br>BIP1859I: Successfully added file 'MyDemoFlow_Mapping.map' to the BAR file.<br>BIP1859I: Successfully added file 'MyDemoApplicationJava.jar' to the BAR file.<br>BIP1853I: Application file 'MyDemoApplication.appzip' successfully added to the BAR file.<br>BIP8071I: Successful command completion.</code><br>Next, we will demonstrate how to apply overrides into your BAR file using the ibmint command. To do this, you will need a file containing the overrides in the standard IBM App Connect Enterprise format. The provided message flow (MyDemoFlow) contains a user defined property named <b>RuntimeEnvironmentDescription</b>, which we will override to take the value <b>DevelopmentEnvironment</b>. This override is expressed as shown below:<br><br><code>MyDemoFlow#RuntimeEnvironmentDescription=DevelopmentEnvironment</code><br><br>Save the above content into a file, such as <b>C:\\temp\\DemoPropertyOverridesFile.txt<b> for example. Execute the following command to apply the override:<br><br><code>ibmint apply overrides C:\\temp\\DemoPropertyOverridesFile.txt --bar-file C:\\temp\\MyDemo.bar</code><br><br>Deploy the BAR file using the ibmint deploy command<br><br><code>ibmint deploy --input-bar-file C:\\temp\\MyDemo.bar --output-work-directory C:\\temp\\DemoIntegrationServer</code><br><br>An alternative to scripting the three separate ibmint commands described above, would be to not even use a BAR file, and to combine all of the actions into a single command which takes your source files and directly prepares the integration server's working directory:<br><br><code>ibmint deploy --input-path C:\\MyWorkspace --overrides-file C:\\temp\\DemoPropertyOverridesFile.txt --output-work-directory C:\\temp\\DemoIntegrationServer</code>"
                     }
                   ]
                 }
